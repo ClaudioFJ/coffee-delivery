@@ -78,15 +78,15 @@
 | Teste realizado | `format`, `typecheck`, `lint` e `build` sem erros |
 | Commit | `chore: add dependencies, lint and format config` |
 
-### [ ] T-06 · Configurar Vitest e Testing Library
+### [x] T-06 · Configurar Vitest e Testing Library
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Ambiente de testes pronto, com um teste de exemplo passando |
 | Requisitos | — (habilita os testes de todas as tarefas) |
 | Arquivos | `vite.config.ts` (bloco `test`), `src/tests/setup.ts`, `src/tests/smoke.test.tsx`, `package.json` (scripts `test`, `test:run`, `coverage`), `.gitignore` (`coverage`) |
 | Critério de pronto | `npm run test:run` verde; `jest-dom` disponível e tipado nos testes; `npm run coverage` gera relatório; `typecheck`, `lint` e `build` continuam passando |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `smoke.test.tsx`: 2 testes passando; `typecheck` e `lint` sem erros |
 | Commit | `test: configure vitest and testing library` |
 
 ### [ ] T-07 · Estrutura de pastas, rotas e layout
@@ -94,8 +94,8 @@
 | --- | --- |
 | Objetivo | Pastas do TECH_SPEC §3, router com 4 rotas e `DefaultLayout` com Header provisório |
 | Requisitos | RF-07 |
-| Arquivos | `src/router.tsx`, `src/layouts/DefaultLayout.tsx`, `src/pages/*/index.tsx`, `vercel.json` |
-| Critério de pronto | Navegar entre `/`, `/checkout`, `/success` e uma rota inexistente sem recarregar; `<title>` muda por página |
+| Arquivos | `src/main.tsx`, `src/App.tsx`, `src/router.tsx`, `src/layouts/DefaultLayout.tsx`, `src/pages/*/`, `src/hooks/usePageTitle.ts`, `src/tests/router.test.tsx`, `index.html` (`lang="pt-BR"`), `vercel.json`; remoção dos arquivos de exemplo do template |
+| Critério de pronto | Navegar entre `/`, `/checkout`, `/success` e uma rota inexistente sem recarregar; `<title>` muda por página; F5 em `/checkout` funciona no `npm run preview`. As demais pastas do TECH_SPEC §3 são criadas junto com o primeiro arquivo de cada uma (o Git não versiona pastas vazias) |
 | Status | ⬜ |
 | Teste realizado | |
 | Commit | `feat: add routes and default layout` |
