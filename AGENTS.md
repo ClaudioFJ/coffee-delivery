@@ -19,9 +19,9 @@ Se o pedido do aluno contradizer os SPEC, **aponte a contradição e pergunte** 
 
 ## 3. Stack (não substituir sem aprovação)
 
-React 19 · TypeScript (strict) · Vite · React Router 7 · Context API + `useReducer` · styled-components 6 · React Hook Form + Zod 4 · Phosphor Icons · Vitest + Testing Library · Vercel.
+React 19 · TypeScript (strict) · Vite · React Router 7 (não migrar para a v8) · oxlint + Prettier · Context API + `useReducer` · styled-components 6 · React Hook Form + Zod 4 · Phosphor Icons · Vitest + Testing Library · Vercel.
 
-**Não adicionar** Redux, Zustand, Axios, Tailwind, UI kits ou bibliotecas de máscara sem aprovação explícita registrada no TECH_SPEC.
+**Não adicionar** Redux, Zustand, Axios, Tailwind, ESLint, UI kits ou bibliotecas de máscara sem aprovação explícita registrada no TECH_SPEC.
 
 ## 4. Como trabalhar
 
