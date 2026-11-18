@@ -89,15 +89,15 @@
 | Teste realizado | `smoke.test.tsx`: 2 testes passando; `typecheck` e `lint` sem erros |
 | Commit | `test: configure vitest and testing library` |
 
-### [ ] T-07 · Estrutura de pastas, rotas e layout
+### [x] T-07 · Estrutura de pastas, rotas e layout
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Pastas do TECH_SPEC §3, router com 4 rotas e `DefaultLayout` com Header provisório |
 | Requisitos | RF-07 |
 | Arquivos | `src/main.tsx`, `src/App.tsx`, `src/router.tsx`, `src/layouts/DefaultLayout.tsx`, `src/pages/*/`, `src/hooks/usePageTitle.ts`, `src/tests/router.test.tsx`, `index.html` (`lang="pt-BR"`), `vercel.json`; remoção dos arquivos de exemplo do template |
 | Critério de pronto | Navegar entre `/`, `/checkout`, `/success` e uma rota inexistente sem recarregar; `<title>` muda por página; F5 em `/checkout` funciona no `npm run preview`. As demais pastas do TECH_SPEC §3 são criadas junto com o primeiro arquivo de cada uma (o Git não versiona pastas vazias) |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `router.test.tsx`: 5 testes (4 rotas + navegação por link) |
 | Commit | `feat: add routes and default layout` |
 
 ---
@@ -109,8 +109,8 @@
 | --- | --- |
 | Objetivo | Gerar propostas de logo, escolher uma e preparar as versões |
 | Requisitos | RF-16 |
-| Arquivos | `src/assets/brand/logo-light.svg`, `logo-dark.svg`, `symbol.svg`, `public/favicon.svg`, `docs/branding/` (prompts e propostas) |
-| Critério de pronto | Versões para fundo claro e escuro; favicon legível em 16 px e 32 px; termos de uso da ferramenta conferidos |
+| Arquivos | `src/assets/brand/mascot-light.png`, `mascot-dark.png`, `public/favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `index.html`, `docs/BRANDING.md`, `docs/branding/` (original, símbolo, testes de tamanho) |
+| Critério de pronto | Versões para fundo claro e escuro; favicon legível em 16 px e 32 px; `BRANDING.md` com ferramenta, prompt, ajustes e termos de uso conferidos |
 | Status | ⬜ |
 | Teste realizado | |
 | Commit | `feat: add AI-generated brand assets` |

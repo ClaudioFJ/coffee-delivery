@@ -77,11 +77,11 @@ Versões de referência consultadas no npm em 17/11/2026. Na instalação, usar 
 ```
 coffee-delivery/
 ├── public/
-│   ├── favicon.svg                  # símbolo da logo IA        [RF-16]
-│   └── apple-touch-icon.png
+│   ├── favicon-16.png, favicon-32.png  # cabeça do mascote IA   [RF-16]
+│   ├── apple-touch-icon.png, icon-192.png
 ├── src/
 │   ├── assets/
-│   │   ├── brand/                   # logo-light.svg, logo-dark.svg, symbol.svg [RF-16]
+│   │   ├── brand/                   # mascot-light.png, mascot-dark.png (256 px) [RF-16]
 │   │   ├── coffees/                 # 14 PNGs 200×200 exportados do Figma [RF-01]
 │   │   └── illustrations/           # hero.png, delivery.svg
 │   ├── components/
@@ -148,7 +148,7 @@ coffee-delivery/
 │   ├── router.tsx
 │   ├── App.tsx
 │   └── main.tsx
-├── docs/  (PRD_SPEC.md, TECH_SPEC.md, TASKS_SPEC.md, AI_USAGE.md, screenshots/)
+├── docs/  (PRD_SPEC.md, TECH_SPEC.md, TASKS_SPEC.md, AI_USAGE.md, BRANDING.md, branding/, screenshots/)
 ├── AGENTS.md
 ├── README.md
 ├── vercel.json
