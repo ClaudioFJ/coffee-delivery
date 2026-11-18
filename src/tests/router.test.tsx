@@ -20,7 +20,7 @@ describe('rotas [RF-07]', () => {
     const user = userEvent.setup()
     const { router } = renderApp('/')
 
-    await user.click(screen.getByRole('link', { name: 'Carrinho' }))
+    await user.click(screen.getByRole('link', { name: 'Carrinho vazio' }))
 
     expect(router.state.location.pathname).toBe('/checkout')
     expect(

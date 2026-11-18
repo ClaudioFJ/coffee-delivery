@@ -18,6 +18,12 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-text-size-adjust: 100%;
   }
 
+  html,
+  body {
+    /* evita rolagem horizontal causada por fundos que vazam até a borda da tela */
+    overflow-x: clip;
+  }
+
   body {
     min-height: 100dvh;
     background: ${({ theme }) => theme.colors.background};

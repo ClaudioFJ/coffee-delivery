@@ -247,6 +247,8 @@ O produto está pronto quando todos os itens abaixo forem verdadeiros:
 | DP-08 | Previsão de entrega fixa "20 min - 30 min" | Previsão calculada | Sem backend nem rastreamento real |
 | DP-09 | Nome "Coffee Delivery" mantido, com logo nova criada por IA | Marca autoral | Foco no fluxo funcional; a identidade nova vem pela logo e pelo tema escuro |
 | DP-10 | Estilização com styled-components | Tailwind CSS | Ferramenta do desafio original; `ThemeProvider` facilita os temas claro/escuro |
+| DP-12 | Ilustração do hero é o mascote da marca sobre um disco claro | Copo de café do Figma | Reforça a identidade criada com IA (RF-16); o copo pode voltar trocando um import |
+| DP-11 | Contador do Header mostra "99+" acima de 99 unidades | Mostrar o número inteiro | Com até 14 cafés × 99, o número poderia ter 4 dígitos e quebrar o círculo do contador; o valor exato continua no nome acessível do link e no checkout |
 
 ---
 

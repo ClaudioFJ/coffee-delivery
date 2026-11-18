@@ -126,52 +126,52 @@
 | Teste realizado | `themes.test.ts`: 46 verificações de contraste WCAG (23 pares × 2 temas) + paridade de tokens |
 | Commit | `style: add design tokens and light/dark themes` |
 
-### [ ] T-10 · ThemeContext e ThemeToggle
+### [x] T-10 · ThemeContext e ThemeToggle
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Alternar tema, persistir e respeitar `prefers-color-scheme` |
 | Requisitos | RF-14 |
 | Arquivos | `src/utils/storage.ts`, `src/hooks/useLocalStorage.ts`, `usePrefersDarkScheme.ts`, `useTheme.ts`, `src/contexts/ThemeContext.ts`, `AppThemeProvider.tsx`, `src/components/ThemeToggle/*`, `src/App.tsx`, `src/layouts/DefaultLayout.tsx`, script no `index.html`, `src/tests/matchMedia.ts`, `test-utils.tsx`, `theme.test.tsx` |
 | Critério de pronto | Toggle troca o tema; F5 mantém; sem escolha salva segue o sistema; sem "flash" branco no escuro |
-| Status | ⬜ |
-| Teste realizado | TC-20 |
+| Status | ✅ |
+| Teste realizado | TC-20 (`theme.test.tsx`, 7 testes); conferido em Chrome real: troca, persistência após F5 e ausência de flash |
 | Commit | `feat: add theme context and toggle` |
 
-### [ ] T-11 · Header
+### [x] T-11 · Header
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Header com logo, `LocationChip`, `ThemeToggle` e botão do carrinho com `CartBadge` (contador fixo por enquanto) |
 | Requisitos | RF-04 (visual), RF-14, RF-16, DP-07 |
-| Arquivos | `src/components/Header/*`, `CartBadge/*`, `LocationChip/*` |
-| Critério de pronto | Fiel ao Figma no desktop; adaptado no celular; logo troca com o tema; carrinho leva a `/checkout` |
-| Status | ⬜ |
-| Teste realizado | |
+| Arquivos | `src/components/Header/*`, `CartBadge/*`, `LocationChip/*`, `VisuallyHidden/*`, `src/styles/helpers.ts`, `src/layouts/DefaultLayout.*` (skip link e container), `src/tests/header.test.tsx` |
+| Critério de pronto | Fiel ao Figma no desktop; adaptado no celular (chip mostra só a UF abaixo de 480 px; sem rolagem horizontal em 320 px); mascote troca com o tema; carrinho leva a `/checkout` com nome acessível que inclui a quantidade; contador mostra "99+" acima de 99 |
+| Status | ✅ |
+| Teste realizado | `header.test.tsx` (10 testes); prints em 1280, 375 e 320 px nos dois temas, sem rolagem horizontal |
 | Commit | `feat: add header with brand, theme toggle and cart button` |
 
 ---
 
 ## Fase 4 — Home e catálogo
 
-### [ ] T-12 · Tipos e dados do catálogo
+### [x] T-12 · Tipos e dados do catálogo
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Tipos do domínio e os 14 cafés tipados |
 | Requisitos | RF-01, RN-04, RN-08 |
-| Arquivos | `src/types/*.ts`, `src/data/coffees.ts`, `src/utils/constants.ts` |
+| Arquivos | `src/types/coffee.ts`, `cart.ts`, `order.ts`, `src/data/coffees.ts`, `src/utils/constants.ts`, `src/tests/catalog.test.ts` |
 | Critério de pronto | 14 cafés com id, nome, descrição, tags, `priceInCents: 990` e imagem; sem `any` |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `catalog.test.ts`: 16 testes (14 cafés, ids únicos, campos válidos) |
 | Commit | `feat: add domain types and coffee catalog data` |
 
-### [ ] T-13 · Utilitários de dinheiro e carrinho
+### [x] T-13 · Utilitários de dinheiro e carrinho
 | Campo | Valor |
 | --- | --- |
-| Objetivo | `formatBRL`, `countUnits`, `calcSubtotal`, `calcTotal`, `sanitizeCart` |
+| Objetivo | `formatBRL`, `formatPriceValue`, `countUnits`, `resolveCartItems`, `calcSubtotal`, `calcDeliveryFee`, `calcTotal`, `sanitizeCart` |
 | Requisitos | RF-04, RF-10, RN-03, RN-04, RNF-04 |
-| Arquivos | `src/utils/money.ts`, `src/utils/cart.ts`, testes |
+| Arquivos | `src/utils/money.ts`, `src/utils/cart.ts`, `src/tests/money.test.ts`, `src/tests/cart-utils.test.ts` |
 | Critério de pronto | Funções puras com testes passando |
-| Status | ⬜ |
-| Teste realizado | TC-07, TC-08, TC-09, TC-10 |
+| Status | ✅ |
+| Teste realizado | TC-07, TC-08, TC-09, TC-10 (`money.test.ts`, `cart-utils.test.ts`: 21 testes) |
 | Commit | `feat: add money formatting and cart calculation utils` |
 
 ### [ ] T-14 · Hero da Home
@@ -179,7 +179,7 @@
 | --- | --- |
 | Objetivo | Título, subtítulo, 4 benefícios com ícones e imagem |
 | Requisitos | RF-15 |
-| Arquivos | `src/pages/Home/*`, `src/assets/illustrations/hero.*` |
+| Arquivos | `src/pages/Home/Home.tsx`, `Hero.tsx`, `Hero.styles.ts`, `src/assets/illustrations/hero-mascot-{light,dark}.webp`, `src/styles/global.ts` (`overflow-x: clip`), `src/tests/hero.test.tsx` |
 | Critério de pronto | Fiel ao Figma no desktop; imagem abaixo do texto no celular; fundo desfocado funciona nos dois temas |
 | Status | ⬜ |
 | Teste realizado | |

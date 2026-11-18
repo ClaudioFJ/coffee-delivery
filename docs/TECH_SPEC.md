@@ -210,6 +210,11 @@ export interface CartState {
   items: CartItem[]
 }
 
+export interface CartItemWithCoffee {   // pronto para exibir
+  coffee: Coffee
+  quantity: number
+}
+
 // types/order.ts
 export type PaymentMethod = 'credit' | 'debit' | 'cash'
 
@@ -410,10 +415,13 @@ export const MAX_QUANTITY = 99
 export const ESTIMATED_DELIVERY = '20 min - 30 min'
 
 // utils/cart.ts — funções puras
+isValidQuantity(value)                  // inteiro entre 1 e 99
 countUnits(items)                       // items.reduce((s, i) => s + i.quantity, 0)
-calcSubtotal(items, catalog)            // Σ priceInCents × quantity (inteiros)
-calcTotal(subtotal)                     // subtotal > 0 ? subtotal + DELIVERY_FEE_IN_CENTS : 0
-sanitizeCart(raw, catalog): CartState
+resolveCartItems(items, catalog)        // CartItem[] → CartItemWithCoffee[] (descarta ids desconhecidos)
+calcSubtotal(resolvedItems)             // Σ coffee.priceInCents × quantity (inteiros)
+calcDeliveryFee(subtotal)               // subtotal > 0 ? DELIVERY_FEE_IN_CENTS : 0
+calcTotal(subtotal)                     // subtotal + calcDeliveryFee(subtotal)
+sanitizeCart(raw: unknown, catalog): CartState  // valida, descarta inválidos, junta duplicados
 
 // utils/money.ts
 const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })

@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react'
+import type { ReactElement } from 'react'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { AppThemeProvider } from '../contexts/AppThemeProvider'
 import { routes } from '../router'
@@ -13,4 +14,9 @@ export function renderApp(path = '/') {
     </AppThemeProvider>,
   )
   return { router, ...result }
+}
+
+// Renderiza um componente isolado com o tema disponível (styled-components precisa dele).
+export function renderWithTheme(ui: ReactElement) {
+  return render(<AppThemeProvider>{ui}</AppThemeProvider>)
 }
