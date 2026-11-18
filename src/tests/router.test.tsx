@@ -1,14 +1,7 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createMemoryRouter, RouterProvider } from 'react-router'
 import { describe, expect, it } from 'vitest'
-import { routes } from '../router'
-
-function renderAt(path: string) {
-  const router = createMemoryRouter(routes, { initialEntries: [path] })
-  render(<RouterProvider router={router} />)
-  return router
-}
+import { renderApp } from './test-utils'
 
 describe('rotas [RF-07]', () => {
   it.each([
@@ -17,7 +10,7 @@ describe('rotas [RF-07]', () => {
     ['/success', 'Uhu! Pedido confirmado', 'Pedido confirmado · Coffee Delivery'],
     ['/rota-que-nao-existe', 'Página não encontrada', 'Página não encontrada · Coffee Delivery'],
   ])('em %s mostra o título da página e atualiza a aba', (path, heading, tabTitle) => {
-    renderAt(path)
+    renderApp(path)
 
     expect(screen.getByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
     expect(document.title).toBe(tabTitle)
@@ -25,7 +18,7 @@ describe('rotas [RF-07]', () => {
 
   it('navega da Home para o Checkout pelo link, sem recarregar a página', async () => {
     const user = userEvent.setup()
-    const router = renderAt('/')
+    const { router } = renderApp('/')
 
     await user.click(screen.getByRole('link', { name: 'Carrinho' }))
 

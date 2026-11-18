@@ -109,8 +109,10 @@ coffee-delivery/
 │   │   ├── Success/
 │   │   └── NotFound/
 │   ├── contexts/
-│   │   ├── CartContext.tsx
-│   │   └── ThemeContext.tsx
+│   │   ├── CartContext.ts           # createContext + tipos
+│   │   ├── CartProvider.tsx         # componente Provider
+│   │   ├── ThemeContext.ts
+│   │   └── AppThemeProvider.tsx
 │   ├── reducers/
 │   │   └── cart/
 │   │       ├── actions.ts
@@ -119,6 +121,7 @@ coffee-delivery/
 │   │   ├── useLocalStorage.ts
 │   │   ├── useCart.ts
 │   │   ├── useTheme.ts
+│   │   ├── usePrefersDarkScheme.ts  # useSyncExternalStore + matchMedia
 │   │   └── useCepLookup.ts
 │   ├── services/
 │   │   └── viaCep.ts                # fetch + tratamento da resposta
@@ -134,6 +137,7 @@ coffee-delivery/
 │   │   ├── money.ts                 # formatBRL
 │   │   ├── cart.ts                  # subtotal, total, contagem, sanitize
 │   │   ├── cep.ts                   # normalizeCep, maskCep
+│   │   ├── storage.ts               # STORAGE_KEYS, readStorage, writeStorage
 │   │   └── constants.ts             # DELIVERY_FEE_IN_CENTS, MAX_QUANTITY...
 │   ├── styles/
 │   │   ├── tokens.ts                # paleta bruta (Figma + ajustes)
@@ -154,6 +158,8 @@ coffee-delivery/
 ├── vercel.json
 └── vite.config.ts
 ```
+
+**Contextos em dois arquivos:** o objeto criado com `createContext` fica num `.ts` e o componente Provider num `.tsx`. A regra `only-export-components` do lint exige isso, porque o *Fast Refresh* do Vite só funciona em arquivos que exportam apenas componentes.
 
 Os componentes ficam em pastas (`Componente.tsx` + `Componente.styles.ts`), assim o TSX fica limpo e os estilos ficam ao lado.
 
@@ -317,7 +323,8 @@ O sufixo `:v1` permite mudar o formato no futuro sem ler dados incompatíveis **
 ### 6.2 Hooks
 | Hook | Responsabilidade | Detalhes |
 | --- | --- | --- |
-| `useLocalStorage<T>(key, initial, parse)` | Estado sincronizado com storage | Leitura no **inicializador preguiçoso** do `useState` (sem piscar o estado vazio). `parse` valida o JSON; se der erro ou vier inválido, usa `initial`. Grava em `useEffect`. `try/catch` em leitura e escrita (modo privado, cota cheia). |
+| `useLocalStorage<T>(key, initial, parse)` | Estado sincronizado com storage | Leitura no **inicializador preguiçoso** do `useState` (sem piscar o estado vazio). `parse` valida o JSON; se der erro ou vier inválido, usa `initial`. Grava **no momento do set** (não em efeito), então nada é salvo até o usuário agir. `try/catch` em leitura e escrita (modo privado, cota cheia), em `utils/storage.ts`. |
+| `usePrefersDarkScheme()` | Preferência de tema do sistema | `useSyncExternalStore` assinando `matchMedia('(prefers-color-scheme: dark)')`; reage se o usuário trocar o tema do sistema com a página aberta |
 | `useCart()` | Acessar o `CartContext` | Erro se usado fora do Provider |
 | `useTheme()` | `{ mode, toggleTheme }` | Ver §8 |
 | `useCepLookup()` | Consultar o ViaCEP | Ver §6.3 |

@@ -115,15 +115,15 @@
 | Teste realizado | Legibilidade em 16–200 px nos fundos claro e escuro (`docs/branding/teste-*.png`); favicon conferido na aba |
 | Commit | `feat: add AI-generated brand assets` |
 
-### [ ] T-09 · Tokens, temas e estilos globais
+### [x] T-09 · Tokens, temas e estilos globais
 | Campo | Valor |
 | --- | --- |
 | Objetivo | `tokens.ts`, `themes.ts` (claro e escuro), `breakpoints.ts`, `GlobalStyle`, `styled.d.ts`, fontes |
 | Requisitos | RF-14, RF-15, RNF-01 |
 | Arquivos | `src/styles/tokens.ts`, `themes.ts`, `breakpoints.ts`, `typography.ts`, `global.ts`, `styled.d.ts`, `src/App.tsx` (ThemeProvider com tema claro fixo), `index.html` (Google Fonts), `src/tests/contrast.ts`, `src/tests/themes.test.ts` |
 | Critério de pronto | Tokens do TECH_SPEC §8.2 implementados; cores `danger`/`success` definidas com contraste verificado e documentadas no TECH_SPEC; nenhum hex fora de `styles/` |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `themes.test.ts`: 46 verificações de contraste WCAG (23 pares × 2 temas) + paridade de tokens |
 | Commit | `style: add design tokens and light/dark themes` |
 
 ### [ ] T-10 · ThemeContext e ThemeToggle
@@ -131,7 +131,7 @@
 | --- | --- |
 | Objetivo | Alternar tema, persistir e respeitar `prefers-color-scheme` |
 | Requisitos | RF-14 |
-| Arquivos | `src/hooks/useLocalStorage.ts`, `src/contexts/ThemeContext.tsx`, `src/hooks/useTheme.ts`, `src/components/ThemeToggle/*`, script no `index.html` |
+| Arquivos | `src/utils/storage.ts`, `src/hooks/useLocalStorage.ts`, `usePrefersDarkScheme.ts`, `useTheme.ts`, `src/contexts/ThemeContext.ts`, `AppThemeProvider.tsx`, `src/components/ThemeToggle/*`, `src/App.tsx`, `src/layouts/DefaultLayout.tsx`, script no `index.html`, `src/tests/matchMedia.ts`, `test-utils.tsx`, `theme.test.tsx` |
 | Critério de pronto | Toggle troca o tema; F5 mantém; sem escolha salva segue o sistema; sem "flash" branco no escuro |
 | Status | ⬜ |
 | Teste realizado | TC-20 |
