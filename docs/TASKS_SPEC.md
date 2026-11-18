@@ -104,15 +104,15 @@
 
 ## Fase 3 — Branding e tema base
 
-### [ ] T-08 · Criar a logo com IA
+### [x] T-08 · Criar a logo com IA
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Gerar propostas de logo, escolher uma e preparar as versões |
 | Requisitos | RF-16 |
 | Arquivos | `src/assets/brand/mascot-light.png`, `mascot-dark.png`, `public/favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `index.html`, `docs/BRANDING.md`, `docs/branding/` (original, símbolo, testes de tamanho) |
 | Critério de pronto | Versões para fundo claro e escuro; favicon legível em 16 px e 32 px; `BRANDING.md` com ferramenta, prompt, ajustes e termos de uso conferidos |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | Legibilidade em 16–200 px nos fundos claro e escuro (`docs/branding/teste-*.png`); favicon conferido na aba |
 | Commit | `feat: add AI-generated brand assets` |
 
 ### [ ] T-09 · Tokens, temas e estilos globais
@@ -120,7 +120,7 @@
 | --- | --- |
 | Objetivo | `tokens.ts`, `themes.ts` (claro e escuro), `breakpoints.ts`, `GlobalStyle`, `styled.d.ts`, fontes |
 | Requisitos | RF-14, RF-15, RNF-01 |
-| Arquivos | `src/styles/*`, `index.html` (fontes, `color-scheme`) |
+| Arquivos | `src/styles/tokens.ts`, `themes.ts`, `breakpoints.ts`, `typography.ts`, `global.ts`, `styled.d.ts`, `src/App.tsx` (ThemeProvider com tema claro fixo), `index.html` (Google Fonts), `src/tests/contrast.ts`, `src/tests/themes.test.ts` |
 | Critério de pronto | Tokens do TECH_SPEC §8.2 implementados; cores `danger`/`success` definidas com contraste verificado e documentadas no TECH_SPEC; nenhum hex fora de `styles/` |
 | Status | ⬜ |
 | Teste realizado | |

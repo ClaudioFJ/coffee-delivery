@@ -1,8 +1,15 @@
 import { RouterProvider } from 'react-router'
+import { ThemeProvider } from 'styled-components'
 import { router } from './router'
+import { GlobalStyle } from './styles/global'
+import { lightTheme } from './styles/themes'
 
-// Os providers globais (tema e carrinho) vão envolver o RouterProvider
-// a partir das tarefas T-10 e T-18.
+// Tema fixo no claro por enquanto. A troca entre claro e escuro chega na T-10.
 export function App() {
-  return <RouterProvider router={router} />
+  return (
+    <ThemeProvider theme={lightTheme}>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  )
 }

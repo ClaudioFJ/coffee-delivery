@@ -460,12 +460,15 @@ Os valores do tema claro seguem o Figma. **Ajustes de acessibilidade** (marcados
 | `badgeBg` ⚠ | Fundo do contador | `#8A5A10` | `#F1C95A` |
 | `badgeText` | Número do contador | `#FFFFFF` (5.91:1)³ | `#161312` (11.66:1) |
 | `focusRing` ⚠ | Contorno de foco (2px + 2px de afastamento) | `#8047F8` (4.82:1) | `#B794FF` (7.65:1) |
-| `danger` | Erros de validação | definir e validar na tarefa de tokens | idem |
-| `success` | Feedback positivo | definir e validar na tarefa de tokens | idem |
+| `danger` | Erros de validação | `#C0261C` (5.07:1 em `input`) | `#FF8A80` (6.46:1 em `input`) |
+| `success` | Feedback positivo | `#1E7B3A` (4.54:1 em `input`) | `#7DD891` (8.5:1 em `input`) |
+| `iconYellowDark`, `iconYellow`, `iconPurple`, `iconNeutral`, `onIcon` | Círculos dos ícones do hero e da tela de sucesso (decorativos) | cores do Figma + branco | iguais, exceto `iconNeutral` = `#36302E` |
 
 ¹ No Figma o texto é branco sobre `#DBAC2C` (2.11:1, reprovado).
 ² No Figma é `#C47F17` sobre `#F1E9C9` (2.7:1, reprovado para texto de 10 px).
 ³ No Figma é branco sobre `#C47F17` (3.28:1, reprovado para texto de 12 px).
+
+**Teste automatizado:** `src/tests/themes.test.ts` recalcula o contraste de 23 pares de cores em cada tema e falha se algum ficar abaixo do mínimo. Se alguém mudar uma cor no futuro e quebrar a acessibilidade, o teste avisa.
 
 Os ícones dos itens do hero e da tela de sucesso mantêm as cores do Figma (`#C47F17`, `#574F4D`, `#DBAC2C`, `#8047F8`) com ícone branco. São decorativos (`aria-hidden`), porque o texto ao lado carrega a informação.
 
