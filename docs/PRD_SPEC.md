@@ -1,7 +1,7 @@
 # PRD_SPEC — Coffee Delivery
 
 > **Product Requirements Document** · Projeto Final 05 — Disciplina SPA
-> Versão 0.1 · Status: rascunho para validação · Última atualização: 17/11/2026
+> Versão 1.0 · Status: implementado · Última atualização: 17/11/2026
 >
 > Documentos relacionados: [`TECH_SPEC.md`](./TECH_SPEC.md) · [`TASKS_SPEC.md`](./TASKS_SPEC.md) · [`../AGENTS.md`](../AGENTS.md)
 
@@ -182,7 +182,7 @@ Durante `loading`, o campo mostra um indicador com texto acessível ("Buscando e
 | --- | --- | --- |
 | RNF-01 | Acessibilidade | Referência **WCAG 2.2 AA**: contraste ≥ 4.5:1 em textos e ≥ 3:1 em componentes de UI nos dois temas; foco visível; navegação completa por teclado; `label` associado a todo campo; erros ligados ao campo com `aria-describedby` e anunciados com `aria-live`; botões de ícone com nome acessível. |
 | RNF-02 | Responsividade | *Mobile first*. Larguras testadas: 320, 375/390, 768, 1280/1440 px. Sem rolagem horizontal involuntária, texto sobreposto ou imagem deformada. |
-| RNF-03 | Desempenho | Lighthouse (mobile) ≥ 90 em Performance e Accessibility; imagens com largura e altura definidas; fontes com `font-display: swap`. |
+| RNF-03 | Desempenho | Lighthouse (mobile) ≥ 90 em Performance e Accessibility; imagens com largura e altura definidas; fontes com `font-display: swap`. **Resultado:** Accessibility 100; Performance 100 no desktop e 83 no mobile simulado (limitação do SPA, ver TECH_SPEC §9.5). |
 | RNF-04 | Persistência | Leitura do `localStorage` tolerante a dados corrompidos ou ausentes (volta ao estado inicial, sem quebrar a aplicação). Chaves versionadas (ex.: `coffee-delivery:cart:v1`). |
 | RNF-05 | Compatibilidade | Duas últimas versões de Chrome, Edge, Firefox e Safari (desktop e mobile). |
 | RNF-06 | Movimento | Animações respeitam `prefers-reduced-motion`. |
@@ -247,7 +247,8 @@ O produto está pronto quando todos os itens abaixo forem verdadeiros:
 | DP-08 | Previsão de entrega fixa "20 min - 30 min" | Previsão calculada | Sem backend nem rastreamento real |
 | DP-09 | Nome "Coffee Delivery" mantido, com logo nova criada por IA | Marca autoral | Foco no fluxo funcional; a identidade nova vem pela logo e pelo tema escuro |
 | DP-10 | Estilização com styled-components | Tailwind CSS | Ferramenta do desafio original; `ThemeProvider` facilita os temas claro/escuro |
-| DP-12 | Ilustração do hero é o mascote da marca sobre um disco claro | Copo de café do Figma | Reforça a identidade criada com IA (RF-16); o copo pode voltar trocando um import |
+| DP-12 | Ilustração do hero: o copo do Figma com o mascote da marca aplicado na cinta | Copo original do Figma (logo antiga) | Mantém a composição do protótipo e aplica a identidade criada com IA (RF-16) |
+| DP-13 | Ilustração da tela de sucesso: o mascote da marca (versão clara/escura) | Entregador de moto do Figma | A ilustração do Figma não foi exportada; o mascote reforça a identidade (RF-16). Pode ser trocada por um import |
 | DP-11 | Contador do Header mostra "99+" acima de 99 unidades | Mostrar o número inteiro | Com até 14 cafés × 99, o número poderia ter 4 dígitos e quebrar o círculo do contador; o valor exato continua no nome acessível do link e no checkout |
 
 ---

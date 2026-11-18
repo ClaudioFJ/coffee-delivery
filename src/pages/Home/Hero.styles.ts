@@ -99,24 +99,8 @@ export const IconCircle = styled.span<{ $color: IconColor }>`
 `
 
 export const Illustration = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: min(100%, 18rem);
+  width: min(100%, 22rem);
   margin-inline: auto;
-
-  /* Disco atrás do mascote, como a mancha atrás do copo no Figma */
-  &::before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    width: 88%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    /* tom suave: o mascote é amarelo, então o disco não pode ser do mesmo amarelo */
-    background: ${({ theme }) => theme.colors.tagBg};
-  }
 
   img {
     width: 100%;
@@ -125,6 +109,6 @@ export const Illustration = styled.div`
 
   ${mq.lg} {
     width: 100%;
-    max-width: 22.5rem;
+    max-width: 29.75rem; /* 476px, como no Figma */
   }
 `

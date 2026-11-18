@@ -1,7 +1,7 @@
 # TECH_SPEC — Coffee Delivery
 
 > **Technical Specification** · Projeto Final 05 — Disciplina SPA
-> Versão 0.1 · Status: rascunho para validação · Última atualização: 17/11/2026
+> Versão 1.0 · Status: implementado · Última atualização: 17/11/2026
 >
 > Implementa os requisitos de [`PRD_SPEC.md`](./PRD_SPEC.md). As tarefas estão em [`TASKS_SPEC.md`](./TASKS_SPEC.md).
 > IDs entre colchetes, como **[RF-03]**, apontam para o requisito do PRD atendido por cada decisão.
@@ -35,6 +35,9 @@ Versões de referência consultadas no npm em 17/11/2026. Na instalação, usar 
 - **DT-02:** oxlint em vez de ESLint, por ser o padrão do template atual do Vite.
 - **DT-03:** `"strict": true` declarado explicitamente no `tsconfig.app.json` (o TypeScript atual já liga o strict por padrão, mas deixar explícito documenta a intenção). O template também ativa `erasableSyntaxOnly`, que proíbe `enum`. Por isso o domínio usa *unions* de strings (`'credit' | 'debit' | 'cash'`).
 - **DT-04:** Prettier sem ponto e vírgula, aspas simples, `trailingComma: all`, `printWidth: 100`, seguindo o estilo do template.
+- **DT-05:** fontes **hospedadas no próprio projeto** com `@fontsource/baloo-2` e `@fontsource/roboto` (importadas no `main.tsx`), no lugar do link do Google Fonts. Sem depender de servidor externo, sem enviar o IP do usuário ao Google e funcionando offline.
+- **DT-06:** **divisão de código por rota**: `/checkout` e `/success` usam a propriedade `lazy` do React Router. React Hook Form, Zod e o formulário só são baixados ao entrar no checkout (pacote principal: de 553 kB para 401 kB). Com `lazy`, o router baixa o código **antes** de trocar a tela, então não há "piscar" de carregamento e o foco por rota continua funcionando.
+- **DT-07:** imagem do hero em `public/images/` com nome fixo, em duas larguras (600 e 952 px, `srcSet`) e **pré-carregada** no `index.html` (`<link rel="preload">`), por ser a maior imagem da primeira tela (LCP).
 
 **Não usaremos:** Redux/Zustand (o Context + `useReducer` atende e é exigido), Axios (o `fetch` nativo com `AbortController` basta), bibliotecas de máscara (a máscara de CEP é uma função de 3 linhas).
 
@@ -79,11 +82,13 @@ coffee-delivery/
 ├── public/
 │   ├── favicon-16.png, favicon-32.png  # cabeça do mascote IA   [RF-16]
 │   ├── apple-touch-icon.png, icon-192.png
+│   ├── images/hero-cup-{600,952}.webp  # hero pré-carregado (DT-07)
+│   └── robots.txt
 ├── src/
 │   ├── assets/
-│   │   ├── brand/                   # mascot-light.png, mascot-dark.png (256 px) [RF-16]
+│   │   ├── brand/                   # mascot-light.webp, mascot-dark.webp (132 px, 3× o tamanho exibido) [RF-16]
 │   │   ├── coffees/                 # 14 PNGs 200×200 exportados do Figma [RF-01]
-│   │   └── illustrations/           # hero.png, delivery.svg
+│   │   └── illustrations/           # delivery-mascot-{light,dark}.webp (tela de sucesso)
 │   ├── components/
 │   │   ├── Header/                  # Header.tsx, Header.styles.ts
 │   │   ├── ThemeToggle/
@@ -97,6 +102,7 @@ coffee-delivery/
 │   │   ├── CartSummary/
 │   │   ├── EmptyState/              # usado por carrinho vazio e pedido inexistente
 │   │   ├── TextField/               # input + label + erro acessível
+│   │   ├── PanelHeader/             # cabeçalho dos painéis do checkout
 │   │   ├── DeliveryAddressForm/
 │   │   ├── PaymentMethodSelector/
 │   │   ├── OrderSuccess/
@@ -104,8 +110,8 @@ coffee-delivery/
 │   ├── layouts/
 │   │   └── DefaultLayout.tsx        # Header + <Outlet/> + skip link
 │   ├── pages/
-│   │   ├── Home/
-│   │   ├── Checkout/
+│   │   ├── Home/                    # Home.tsx + Hero.tsx
+│   │   ├── Checkout/                # Checkout.tsx (vazio ou formulário) + CheckoutForm.tsx
 │   │   ├── Success/
 │   │   └── NotFound/
 │   ├── contexts/
@@ -122,7 +128,9 @@ coffee-delivery/
 │   │   ├── useCart.ts
 │   │   ├── useTheme.ts
 │   │   ├── usePrefersDarkScheme.ts  # useSyncExternalStore + matchMedia
-│   │   └── useCepLookup.ts
+│   │   ├── useCepLookup.ts
+│   │   ├── useRouteFocus.ts         # foco no <h1> a cada troca de rota
+│   │   └── usePageTitle.ts
 │   ├── services/
 │   │   └── viaCep.ts                # fetch + tratamento da resposta
 │   ├── schemas/
@@ -136,7 +144,8 @@ coffee-delivery/
 │   ├── utils/
 │   │   ├── money.ts                 # formatBRL
 │   │   ├── cart.ts                  # subtotal, total, contagem, sanitize
-│   │   ├── cep.ts                   # normalizeCep, maskCep
+│   │   ├── cep.ts                   # onlyDigits, maskCep, isCompleteCep
+│   │   ├── order.ts                 # createOrder, createOrderId, parseOrder
 │   │   ├── storage.ts               # STORAGE_KEYS, readStorage, writeStorage
 │   │   └── constants.ts             # DELIVERY_FEE_IN_CENTS, MAX_QUANTITY...
 │   ├── styles/
@@ -146,9 +155,11 @@ coffee-delivery/
 │   │   ├── global.ts
 │   │   └── styled.d.ts              # tipa o DefaultTheme
 │   ├── tests/
-│   │   ├── setup.ts
-│   │   ├── test-utils.tsx           # render com providers
-│   │   └── *.test.ts(x)
+│   │   ├── setup.ts                 # jest-dom, limpeza, matchMedia padrão
+│   │   ├── test-utils.tsx           # renderApp (providers + rotas), renderWithTheme
+│   │   ├── fixtures.ts              # pedido de exemplo, saveCart, saveLastOrder
+│   │   ├── matchMedia.ts, contrast.ts
+│   │   └── *.test.ts(x)             # 18 arquivos, 197 testes
 │   ├── router.tsx
 │   ├── App.tsx
 │   └── main.tsx
@@ -296,6 +307,7 @@ interface CartContextValue {
   incrementItem(coffeeId: string): void
   decrementItem(coffeeId: string): void
   removeItem(coffeeId: string): void
+  clearCart(): void
   lastOrder: Order | null                                      // [RF-12]
   confirmOrder(data: CheckoutFormData): Order                  // [RF-12, RF-13]
 }
@@ -350,8 +362,8 @@ function useCepLookup(): {
   - HTTP fora de 2xx → erro `error`
   - Resposta `{ "erro": true }` → `not-found`
   - Sucesso → `{ street: logradouro, neighborhood: bairro, city: localidade, uf }`
-- **Timeout** de 8 s com `AbortSignal.timeout`, combinado com o `AbortController` que cancela a consulta anterior quando o CEP muda.
-- Gatilho: ao digitar o 8º dígito (`watch('cep')` + `useEffect`), ou no `blur`.
+- **Timeout** de 8 s com `setTimeout` + `AbortController` (o mesmo controller cancela a consulta anterior quando o CEP muda). Cancelamento por CEP novo é ignorado; cancelamento por tempo vira `error`.
+- Gatilho: o **evento** de digitação no CEP (`onChange` do `register`), quando o valor chega a 8 dígitos. Não usamos `useEffect` para isso: a consulta é resposta direta a uma ação do usuário. O mesmo CEP não é consultado duas vezes seguidas.
 - Em `success`: `setValue` em `street`, `neighborhood`, `city`, `uf` com `{ shouldValidate: true }` e foco no campo **Número**. Campos que vierem vazios na API ficam para o usuário (DP-05).
 - Em `not-found`/`error`: `setError('cep', …)` com a mensagem do PRD §3.2; os campos continuam editáveis.
 - O botão "Confirmar pedido" fica desabilitado durante `loading` **[RN-10]**.
@@ -368,15 +380,15 @@ createBrowserRouter([
     element: <DefaultLayout />,
     children: [
       { path: '/',         element: <Home /> },
-      { path: '/checkout', element: <Checkout /> },
-      { path: '/success',  element: <Success /> },
+      { path: '/checkout', lazy: async () => ({ Component: (await import('./pages/Checkout')).Checkout }) },
+      { path: '/success',  lazy: async () => ({ Component: (await import('./pages/Success')).Success }) },
       { path: '*',         element: <NotFound /> },
     ],
   },
 ])
 ```
 - Links com `<Link>`/`useNavigate`, sem `<a href>` interno.
-- A cada troca de rota: `document.title` específico ("Checkout · Coffee Delivery") e foco movido para o `<h1>` da página, para o leitor de tela anunciar a nova tela **[RNF-01]**.
+- A cada troca de rota: `document.title` específico ("Checkout · Coffee Delivery", via `usePageTitle`) e foco movido para o `<h1>` da página (`useRouteFocus`), para o leitor de tela anunciar a nova tela **[RNF-01]**. `<ScrollRestoration />` volta ao topo ao trocar de página.
 - `vercel.json`: `{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }`, para o F5 em `/checkout` não dar 404 no deploy.
 - **Guardas:** `/checkout` com carrinho vazio mostra `EmptyState` (não redireciona, para a pessoa entender o que houve). `/success` sem `lastOrder` mostra `EmptyState` **[RN-09]**.
 
@@ -529,7 +541,7 @@ Alvos de toque de no mínimo **44×44 px** no celular: os botões "+" e "−" ga
 - `QuantityInput`: botões com `aria-label="Diminuir quantidade de Latte"`, valor com `aria-live="polite"` e `disabled` nos limites.
 - Botão de adicionar: `aria-label="Adicionar 2 Latte ao carrinho"`; depois de clicar, uma mensagem em região `role="status"` confirma a adição.
 - Contador do carrinho: link com `aria-label="Carrinho, 6 itens"`.
-- Campos: o Figma não mostra rótulo visível, então cada campo terá `<label>` **visualmente oculto** + placeholder com contraste ≥ 4.5:1. "Opcional" faz parte do nome acessível do Complemento. Erros com `aria-invalid` e `aria-describedby`.
+- Campos: o Figma não mostra rótulo visível, então cada campo terá `<label>` **visualmente oculto** + placeholder com contraste ≥ 4.5:1. "Opcional" faz parte do nome acessível do Complemento ("Complemento (opcional)"). Erros com `aria-invalid` e `aria-describedby`. **Limitação conhecida:** depois de preenchido, o placeholder some e o campo fica sem rótulo visível; aceitamos para manter a fidelidade ao Figma (o leitor de tela continua lendo o `<label>`).
 - Pagamento: `<fieldset>` + `<legend>` + `input type="radio"` nativos estilizados (setas do teclado funcionam sem código extra). Selecionado indicado por cor **e** borda.
 - Foco sempre visível (`:focus-visible` com `focusRing`), nunca `outline: none` sem substituto.
 - Imagens de café com `alt` = nome do café; ilustrações decorativas com `alt=""`.
@@ -573,7 +585,15 @@ Alvos de toque de no mínimo **44×44 px** no celular: os botões "+" e "−" ga
 | TC-21 | Manual | Larguras 320–1440, nos dois temas | Sem rolagem horizontal; tudo legível | RF-15 |
 | TC-22 | Manual | Fluxo completo só com teclado | Todos os controles alcançáveis, foco visível | RNF-01 |
 
-### 9.3 Instruções de execução
+### 9.3 Resultados (17/11/2026)
+- **197 testes** em 18 arquivos, todos passando.
+- **Cobertura de linhas:** 97,6% no geral; `utils/` 98,3%; `reducers/` 93,3%; `services/` 100%; `contexts/` 100%; `hooks/` 98,2%.
+- **Verificação visual:** 5 telas × 4 larguras (1440, 768, 375, 320) × 2 temas, sem rolagem horizontal.
+- **Fluxo completo no Chrome** (com o ViaCEP simulado): adicionar → checkout → CEP → número → pagamento → confirmar → sucesso → F5.
+- **Auditoria automática de acessibilidade (axe-core, regras WCAG 2.0/2.1/2.2 A e AA):** 0 violações em Home, Checkout (com os erros de validação visíveis), Sucesso e 404, nos dois temas.
+- **Teclado:** ordem do Tab = skip link → marca → tema → carrinho → controles dos cards; skip link leva ao `<main>`; rádios de pagamento trocam com as setas.
+
+### 9.4 Instruções de execução
 ```bash
 npm install
 npm run dev          # http://localhost:5173
@@ -586,7 +606,17 @@ npm run typecheck    # tsc --noEmit
 npm run build && npm run preview
 ```
 
-### 9.4 Padrões de código
+### 9.5 Lighthouse (build de produção, `npm run preview`)
+| Categoria | Mobile (simulado, 4G lento) | Desktop |
+| --- | --- | --- |
+| Desempenho | 83 | 100 |
+| Acessibilidade | 100 | 100 |
+| Boas práticas | 100 | 100 |
+| SEO (com `robots.txt`) | 100 | 100 |
+
+O RNF-03 pedia ≥ 90 no mobile. Ficamos em 83: num SPA renderizado no navegador, a imagem do hero só aparece depois que o JavaScript carrega e executa. Já aplicamos divisão por rota (DT-06), preload da imagem (DT-07), WebP e fontes locais (DT-05). O próximo passo seria pré-renderizar a Home em HTML (SSG), o que foge do escopo de um SPA da disciplina. Registrado como limitação conhecida.
+
+### 9.6 Padrões de código
 - TypeScript `strict`, sem `any`. Para dados externos (`localStorage`, ViaCEP), usar `unknown` e validar.
 - Nomes de componentes em PascalCase; hooks começam com `use`; constantes em `UPPER_SNAKE_CASE`.
 - Sem `console.log` no código entregue.

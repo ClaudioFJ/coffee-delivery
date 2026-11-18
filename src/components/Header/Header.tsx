@@ -1,26 +1,23 @@
 import { ShoppingCartIcon } from '@phosphor-icons/react'
-import mascotDark from '../../assets/brand/mascot-dark.png'
-import mascotLight from '../../assets/brand/mascot-light.png'
+import mascotDark from '../../assets/brand/mascot-dark.webp'
+import mascotLight from '../../assets/brand/mascot-light.webp'
+import { useCart } from '../../hooks/useCart'
 import { useTheme } from '../../hooks/useTheme'
 import { CartBadge } from '../CartBadge'
 import { LocationChip } from '../LocationChip'
 import { ThemeToggle } from '../ThemeToggle'
 import { Actions, BrandLink, CartLink, HeaderBar, HeaderContent, Wordmark } from './Header.styles'
 
-interface HeaderProps {
-  cartCount?: number
-  location?: { city: string; uf: string } | null
-}
-
 function cartLabel(count: number) {
   if (count === 0) return 'Carrinho vazio'
   return `Carrinho, ${count} ${count === 1 ? 'item' : 'itens'}`
 }
 
-// cartCount e location chegam por Props por enquanto: o carrinho (T-18) e o
-// último pedido (T-27) ainda não existem. Depois o Header passa a lê-los do contexto.
-export function Header({ cartCount = 0, location = null }: HeaderProps) {
+export function Header() {
   const { mode } = useTheme()
+  const { totalUnits: cartCount, lastOrder } = useCart() // RF-04: soma das unidades
+  // DP-07: a localização vem do último pedido; sem pedido, o chip não aparece
+  const location = lastOrder ? lastOrder.address : null
 
   return (
     <HeaderBar>

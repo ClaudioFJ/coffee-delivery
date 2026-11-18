@@ -16,12 +16,14 @@ export const visuallyHidden = css`
 
 // Largura máxima e respiro lateral compartilhados pelo Header e pelo conteúdo.
 export const pageContainer = css`
+  /* conteúdo de até 1120px (Figma) + o respiro lateral de cada lado */
   width: 100%;
-  max-width: ${({ theme }) => theme.layout.maxWidth};
+  max-width: calc(${({ theme }) => theme.layout.maxWidth} + 2rem);
   margin-inline: auto;
   padding-inline: 1rem;
 
   ${mq.md} {
+    max-width: calc(${({ theme }) => theme.layout.maxWidth} + 4rem);
     padding-inline: 2rem;
   }
 `

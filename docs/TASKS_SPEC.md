@@ -1,6 +1,6 @@
 # TASKS_SPEC — Plano de implementação
 
-> Projeto Final 05 — Coffee Delivery · Versão 0.1 · Última atualização: 17/11/2026
+> Projeto Final 05 — Coffee Delivery · Versão 1.0 · Última atualização: 17/11/2026
 >
 > Requisitos em [`PRD_SPEC.md`](./PRD_SPEC.md) · decisões técnicas em [`TECH_SPEC.md`](./TECH_SPEC.md) · regras do assistente em [`../AGENTS.md`](../AGENTS.md)
 
@@ -174,222 +174,222 @@
 | Teste realizado | TC-07, TC-08, TC-09, TC-10 (`money.test.ts`, `cart-utils.test.ts`: 21 testes) |
 | Commit | `feat: add money formatting and cart calculation utils` |
 
-### [ ] T-14 · Hero da Home
+### [x] T-14 · Hero da Home
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Título, subtítulo, 4 benefícios com ícones e imagem |
 | Requisitos | RF-15 |
-| Arquivos | `src/pages/Home/Home.tsx`, `Hero.tsx`, `Hero.styles.ts`, `src/assets/illustrations/hero-mascot-{light,dark}.webp`, `src/styles/global.ts` (`overflow-x: clip`), `src/tests/hero.test.tsx` |
+| Arquivos | `src/pages/Home/Home.tsx`, `Hero.tsx`, `Hero.styles.ts`, `src/assets/illustrations/hero-cup.webp`, `src/styles/global.ts` (`overflow-x: clip`), `src/tests/hero.test.tsx` |
 | Critério de pronto | Fiel ao Figma no desktop; imagem abaixo do texto no celular; fundo desfocado funciona nos dois temas |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `hero.test.tsx` (2 testes); prints em 1440, 768, 375 e 320 px nos dois temas, sem rolagem horizontal |
 | Commit | `feat: add home hero section` |
 
-### [ ] T-15 · QuantityInput, Tag e CoffeeCard
+### [x] T-15 · QuantityInput, Tag e CoffeeCard
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Componentes do card com estado local de quantidade |
 | Requisitos | RF-01, RF-02, RN-01 |
-| Arquivos | `src/components/QuantityInput/*`, `Tag/*`, `CoffeeCard/*` |
+| Arquivos | `src/components/QuantityInput/*`, `Tag/*`, `CoffeeCard/*`, `src/tests/test-utils.tsx`, `src/tests/catalog-ui.test.tsx` |
 | Critério de pronto | "−" desabilitado em 1 e "+" em 99; nomes acessíveis; alvos de toque ≥ 44 px |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `catalog-ui.test.tsx`: QuantityInput (limites 1 e 99) e CoffeeCard (adiciona e volta para 1) |
 | Commit | `feat: add quantity input and coffee card` |
 
-### [ ] T-16 · CoffeeCatalog responsivo
+### [x] T-16 · CoffeeCatalog responsivo
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Seção "Nossos cafés" com grid adaptável |
 | Requisitos | RF-01, RF-15 |
-| Arquivos | `src/components/CoffeeCatalog/*`, `src/pages/Home/*` |
+| Arquivos | `src/components/CoffeeCatalog/*`, `src/pages/Home/Home.tsx`, `src/styles/helpers.ts` (largura útil de 1120 px) |
 | Critério de pronto | 14 cards; 1 coluna em 320 px e 4 em 1280 px; sem rolagem horizontal |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `catalog-ui.test.tsx`: 14 cards na seção "Nossos cafés"; prints: 4 colunas em 1440 px, 1 coluna em 375 e 320 px |
 | Commit | `feat: add responsive coffee catalog` |
 
 ---
 
 ## Fase 5 — Carrinho
 
-### [ ] T-17 · Reducer do carrinho
+### [x] T-17 · Reducer do carrinho
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Ações e reducer puro conforme TECH_SPEC §5 |
 | Requisitos | RF-03, RF-05, RN-01, RN-02 |
-| Arquivos | `src/reducers/cart/actions.ts`, `reducer.ts`, testes |
+| Arquivos | `src/reducers/cart/actions.ts`, `reducer.ts`, `src/tests/cart-reducer.test.ts` |
 | Critério de pronto | Todos os testes do reducer passando, incluindo o de não-mutação |
-| Status | ⬜ |
-| Teste realizado | TC-01..TC-06 |
+| Status | ✅ |
+| Teste realizado | TC-01 a TC-06 (`cart-reducer.test.ts`: 16 testes, incluindo imutabilidade com `Object.freeze`) |
 | Commit | `feat: add cart reducer and actions` |
 
-### [ ] T-18 · CartContext e useCart
+### [x] T-18 · CartContext e useCart
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Provider com valores derivados e funções do carrinho |
 | Requisitos | RF-03, RF-04, RF-05 |
-| Arquivos | `src/contexts/CartContext.tsx`, `src/hooks/useCart.ts`, `src/main.tsx` |
+| Arquivos | `src/contexts/CartContext.ts`, `CartProvider.tsx`, `src/hooks/useCart.ts`, `src/App.tsx`, `src/components/Header/Header.tsx`, `src/pages/Home/Home.tsx` (anúncio acessível), `src/tests/test-utils.tsx`, `header.test.tsx`, `cart-context.test.tsx` |
 | Critério de pronto | Adicionar pelo card atualiza o badge do Header; `useCart` fora do Provider gera erro claro |
-| Status | ⬜ |
-| Teste realizado | TC-14 |
+| Status | ✅ |
+| Teste realizado | TC-14 (`cart-context.test.tsx`); Header lendo `totalUnits`; conferido no Chrome |
 | Commit | `feat: add cart context and connect catalog and header` |
 
-### [ ] T-19 · Persistência do carrinho
+### [x] T-19 · Persistência do carrinho
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Carregar e salvar o carrinho no `localStorage` com sanitização |
 | Requisitos | RF-06, RNF-04 |
-| Arquivos | `src/contexts/CartContext.tsx` |
+| Arquivos | `src/contexts/CartProvider.tsx`, `src/tests/cart-persistence.test.tsx` |
 | Critério de pronto | F5 mantém o carrinho; JSON corrompido no storage não quebra a aplicação |
-| Status | ⬜ |
-| Teste realizado | TC-19 |
+| Status | ✅ |
+| Teste realizado | TC-19 (`cart-persistence.test.tsx`: 4 testes); F5 conferido no Chrome |
 | Commit | `feat: persist cart in local storage` |
 
 ---
 
 ## Fase 6 — Checkout
 
-### [ ] T-20 · Layout do Checkout, CartItem e CartSummary
+### [x] T-20 · Layout do Checkout, CartItem e CartSummary
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Coluna "Cafés selecionados" funcional e estado vazio |
 | Requisitos | RF-05, RF-10, RN-09 |
-| Arquivos | `src/pages/Checkout/*`, `src/components/CartItem/*`, `CartSummary/*`, `EmptyState/*` |
+| Arquivos | `src/components/CartItem/*`, `CartSummary/*`, `EmptyState/*`, `PanelHeader/*`, `src/pages/Checkout/Checkout.tsx`, `Checkout.styles.ts`, `src/pages/NotFound/NotFound.tsx` |
 | Critério de pronto | +, − e Remover funcionam; valores batem com TC-08; carrinho vazio mostra `EmptyState` |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `checkout.test.tsx` (itens e resumo, +/−, "−" desabilitado em 1, remover até o estado vazio) e `router.test.tsx` (estado vazio) |
 | Commit | `feat: add checkout cart list, summary and empty state` |
 
-### [ ] T-21 · Schema Zod e TextField
+### [x] T-21 · Schema Zod e TextField
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Schema do checkout e campo de texto acessível |
 | Requisitos | RF-08, RF-09, RN-07 |
-| Arquivos | `src/schemas/checkoutSchema.ts`, `src/utils/cep.ts`, `src/components/TextField/*`, testes |
+| Arquivos | `src/schemas/checkoutSchema.ts`, `src/utils/cep.ts`, `src/components/TextField/*`, `src/types/order.ts` (`PAYMENT_METHODS`) |
 | Critério de pronto | Testes do schema passando; `TextField` com label, erro e `aria-*` |
-| Status | ⬜ |
-| Teste realizado | TC-11, TC-12 |
+| Status | ✅ |
+| Teste realizado | TC-11, TC-12 (`checkout-schema.test.ts`: 22 testes, incluindo a máscara de CEP) |
 | Commit | `feat: add checkout schema and accessible text field` |
 
-### [ ] T-22 · Formulário de endereço
+### [x] T-22 · Formulário de endereço
 | Campo | Valor |
 | --- | --- |
 | Objetivo | `DeliveryAddressForm` com RHF + máscara de CEP |
 | Requisitos | RF-08, RN-07, RF-15 |
-| Arquivos | `src/components/DeliveryAddressForm/*`, `src/pages/Checkout/*` |
+| Arquivos | `src/components/DeliveryAddressForm/*`, `src/pages/Checkout/CheckoutForm.tsx` |
 | Critério de pronto | Erros aparecem ao sair do campo; layout do Figma no desktop e em coluna no celular |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `checkout.test.tsx`; prints em 1440, 768, 375 e 320 px |
 | Commit | `feat: add delivery address form` |
 
-### [ ] T-23 · Integração com o ViaCEP
+### [x] T-23 · Integração com o ViaCEP
 | Campo | Valor |
 | --- | --- |
 | Objetivo | `services/viaCep.ts` + `useCepLookup` + preenchimento automático |
 | Requisitos | RF-08, RN-07 |
-| Arquivos | `src/services/viaCep.ts`, `src/hooks/useCepLookup.ts`, `DeliveryAddressForm/*`, testes |
+| Arquivos | `src/services/viaCep.ts`, `src/hooks/useCepLookup.ts`, `src/pages/Checkout/CheckoutForm.tsx` |
 | Critério de pronto | CEP `90250-440` preenche os 4 campos; CEP inexistente, erro de rede e carregamento tratados; foco vai para Número |
-| Status | ⬜ |
-| Teste realizado | TC-13, TC-15 |
+| Status | ✅ |
+| Teste realizado | TC-13 (`viacep.test.ts`: 10 testes, incluindo timeout e cancelamento), TC-15 (`checkout.test.tsx`); fluxo no Chrome com ViaCEP simulado |
 | Commit | `feat: autofill address with ViaCEP lookup` |
 
-### [ ] T-24 · Seletor de pagamento
+### [x] T-24 · Seletor de pagamento
 | Campo | Valor |
 | --- | --- |
 | Objetivo | `PaymentMethodSelector` com rádios nativos estilizados |
 | Requisitos | RF-09, RN-05 |
 | Arquivos | `src/components/PaymentMethodSelector/*` |
 | Critério de pronto | Setas do teclado trocam a opção; selecionado visível por cor e borda; erro sem seleção |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | TC-12; navegação por setas conferida no Chrome |
 | Commit | `feat: add payment method selector` |
 
-### [ ] T-25 · Envio e bloqueio do pedido
+### [x] T-25 · Envio e bloqueio do pedido
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Submit do formulário com bloqueios e feedback acessível |
 | Requisitos | RF-11, RN-10 |
-| Arquivos | `src/pages/Checkout/*` |
+| Arquivos | `src/pages/Checkout/CheckoutForm.tsx` |
 | Critério de pronto | Sem itens, com erro ou durante a consulta de CEP: nenhum pedido é criado; foco no primeiro erro; erro anunciado |
-| Status | ⬜ |
-| Teste realizado | TC-16 |
+| Status | ✅ |
+| Teste realizado | TC-16 (`checkout.test.tsx`): sem pedido, erros visíveis, alerta anunciado, foco no CEP; botão bloqueado durante a consulta |
 | Commit | `feat: validate and block invalid checkout submission` |
 
 ---
 
 ## Fase 7 — Confirmação
 
-### [ ] T-26 · Snapshot do pedido e limpeza do carrinho
+### [x] T-26 · Snapshot do pedido e limpeza do carrinho
 | Campo | Valor |
 | --- | --- |
 | Objetivo | `confirmOrder`, `lastOrder` persistido e navegação para `/success` |
 | Requisitos | RF-12, RF-13, RN-06 |
-| Arquivos | `src/contexts/CartContext.tsx`, `src/pages/Checkout/*` |
+| Arquivos | `src/utils/order.ts`, `src/contexts/CartContext.ts`, `CartProvider.tsx`, `src/components/Header/Header.tsx` |
 | Critério de pronto | Após confirmar, carrinho vazio e badge oculto; `lastOrder` salvo; voltar não leva a checkout quebrado |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | `order.test.ts` (12 testes), TC-17 |
 | Commit | `feat: create order snapshot and clear cart on confirm` |
 
-### [ ] T-27 · Tela de sucesso
+### [x] T-27 · Tela de sucesso
 | Campo | Valor |
 | --- | --- |
 | Objetivo | `OrderSuccess` com endereço, previsão e pagamento; estado vazio |
 | Requisitos | RF-12, RF-13, RN-09, DP-07 |
-| Arquivos | `src/pages/Success/*`, `src/components/OrderSuccess/*`, `src/assets/illustrations/delivery.*` |
+| Arquivos | `src/pages/Success/Success.tsx`, `src/components/OrderSuccess/*`, `src/assets/illustrations/delivery-mascot-{light,dark}.webp` |
 | Critério de pronto | Dados corretos mesmo após F5; `/success` sem pedido mostra estado vazio; chip do Header mostra a cidade do pedido |
-| Status | ⬜ |
-| Teste realizado | TC-17, TC-18 |
+| Status | ✅ |
+| Teste realizado | TC-17, TC-18 (`success.test.tsx`); F5 na tela de sucesso conferido no Chrome |
 | Commit | `feat: add order success page` |
 
 ---
 
 ## Fase 8 — Tema, responsividade e acessibilidade
 
-### [ ] T-28 · Revisão completa do tema escuro
+### [x] T-28 · Revisão completa do tema escuro
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Conferir todas as telas e estados no tema escuro |
 | Requisitos | RF-14, RNF-01 |
 | Arquivos | Estilos dos componentes conforme necessário |
 | Critério de pronto | Cards, campos, erros, pagamento selecionado, badge, sucesso e ilustrações legíveis; nenhum hex fora de `styles/` |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | 40 prints (5 telas × 4 larguras × 2 temas) revisados; contraste coberto por `themes.test.ts` |
 | Commit | `style: polish dark theme across all screens` |
 
-### [ ] T-29 · Revisão de responsividade
+### [x] T-29 · Revisão de responsividade
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Testar e ajustar as três telas em 320, 375, 768, 1280 e 1440 px |
 | Requisitos | RF-15, RNF-02 |
 | Arquivos | Estilos dos componentes conforme necessário |
 | Critério de pronto | Fluxo completo sem rolagem horizontal; alvos de toque ≥ 44 px; screenshots salvos em `docs/screenshots/` |
-| Status | ⬜ |
-| Teste realizado | TC-21 |
+| Status | ✅ |
+| Teste realizado | TC-21: 0 casos de rolagem horizontal nas 40 combinações; prints em `docs/screenshots/` |
 | Commit | `style: refine responsive layouts` |
 
-### [ ] T-30 · Auditoria de acessibilidade
+### [x] T-30 · Auditoria de acessibilidade
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Skip link, foco por rota, teclado, leitor de tela, Lighthouse |
 | Requisitos | RNF-01, RNF-03, RNF-06 |
-| Arquivos | `DefaultLayout`, páginas, componentes conforme necessário |
+| Arquivos | `src/hooks/useRouteFocus.ts`, `src/layouts/DefaultLayout.tsx` (`ScrollRestoration`), `src/router.tsx` (rotas lazy), `src/main.tsx` (fontes locais), `index.html` (preload), `public/images/`, `public/robots.txt` |
 | Critério de pronto | Fluxo completo só com teclado; Lighthouse mobile ≥ 90 em Accessibility e Performance |
-| Status | ⬜ |
-| Teste realizado | TC-22 |
+| Status | ✅ |
+| Teste realizado | TC-22: ordem do Tab, skip link e foco por rota no Chrome. Lighthouse: Acessibilidade 100, Boas práticas 100; Desempenho 100 (desktop) e 83 (mobile simulado), ver TECH_SPEC §9.5 |
 | Commit | `fix: accessibility improvements` |
 
 ---
 
 ## Fase 9 — Qualidade e entrega
 
-### [ ] T-31 · Completar os testes
+### [x] T-31 · Completar os testes
 | Campo | Valor |
 | --- | --- |
 | Objetivo | Garantir TC-01..TC-20 automatizados e cobertura da lógica |
 | Requisitos | Todos os RF e RN com lógica |
 | Arquivos | `src/tests/*` |
 | Critério de pronto | Todos os testes verdes; cobertura ≥ 80% em `utils/`, `reducers/`, `schemas/` |
-| Status | ⬜ |
-| Teste realizado | |
+| Status | ✅ |
+| Teste realizado | 197 testes em 18 arquivos; cobertura de linhas: 97,6% geral, 98,3% em `utils/`, 93,3% em `reducers/`, 100% em `services/` |
 | Commit | `test: complete unit and component test coverage` |
 
 ### [ ] T-32 · Deploy
@@ -399,7 +399,7 @@
 | Requisitos | RF-07 |
 | Arquivos | `vercel.json` |
 | Critério de pronto | F5 em `/checkout` e `/success` funciona no link publicado; ViaCEP funciona em produção |
-| Status | ⬜ |
+| Status | ⬜ (feito pelo aluno na Vercel; passo a passo no README) |
 | Teste realizado | |
 | Commit | `chore: configure deploy` |
 
@@ -410,7 +410,7 @@
 | Requisitos | RF-16 (Branding com IA), entrega final |
 | Arquivos | `README.md`, `docs/*.md`, `docs/AI_USAGE.md` |
 | Critério de pronto | README com objetivos, stack, instalação, scripts, decisões, screenshots desktop/mobile/escuro, link do Figma, link publicado, Branding com IA e ≥ 3 evidências de uso de IA |
-| Status | ⬜ |
+| Status | 🔄 (falta: link publicado, link do Figma, campos ✏️ do BRANDING e AI_USAGE com as palavras do aluno) |
 | Teste realizado | |
 | Commit | `docs: finalize readme and specs` |
 

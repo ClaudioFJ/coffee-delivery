@@ -1,4 +1,5 @@
-export type PaymentMethod = 'credit' | 'debit' | 'cash'
+export const PAYMENT_METHODS = ['credit', 'debit', 'cash'] as const
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number]
 
 export const PAYMENT_METHOD_LABEL: Record<PaymentMethod, string> = {
   credit: 'Cartão de Crédito',

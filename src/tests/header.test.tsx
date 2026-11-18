@@ -5,14 +5,19 @@ import { describe, expect, it } from 'vitest'
 import { CartBadge } from '../components/CartBadge'
 import { Header } from '../components/Header'
 import { AppThemeProvider } from '../contexts/AppThemeProvider'
+import { CartProvider } from '../contexts/CartProvider'
+import type { CartState } from '../types/cart'
+import { saveLastOrder } from './fixtures'
 import { renderWithTheme } from './test-utils'
 
-function renderHeader(props: Parameters<typeof Header>[0] = {}) {
+function renderHeader(cart?: CartState) {
   return render(
     <AppThemeProvider>
-      <MemoryRouter>
-        <Header {...props} />
-      </MemoryRouter>
+      <CartProvider initialState={cart}>
+        <MemoryRouter>
+          <Header />
+        </MemoryRouter>
+      </CartProvider>
     </AppThemeProvider>,
   )
 }
@@ -48,11 +53,19 @@ describe('Header', () => {
     )
   })
 
-  it.each([
-    [1, 'Carrinho, 1 item'],
-    [6, 'Carrinho, 6 itens'],
-  ])('com %i unidade(s), o link se chama "%s"', (count, name) => {
-    renderHeader({ cartCount: count })
+  it.each<[CartState, string]>([
+    [{ items: [{ coffeeId: 'latte', quantity: 1 }] }, 'Carrinho, 1 item'],
+    [
+      {
+        items: [
+          { coffeeId: 'latte', quantity: 5 },
+          { coffeeId: 'expresso-tradicional', quantity: 1 },
+        ],
+      },
+      'Carrinho, 6 itens',
+    ],
+  ])('soma as unidades do carrinho no nome do link [RF-04]', (cart, name) => {
+    renderHeader(cart)
     expect(screen.getByRole('link', { name })).toBeInTheDocument()
   })
 
@@ -61,8 +74,9 @@ describe('Header', () => {
     expect(screen.queryByText(/entrega em/i)).not.toBeInTheDocument()
   })
 
-  it('mostra a localização quando informada', () => {
-    renderHeader({ location: { city: 'Porto Alegre', uf: 'RS' } })
+  it('mostra a cidade do último pedido (DP-07)', () => {
+    saveLastOrder()
+    renderHeader()
     expect(screen.getByText(/entrega em/i).parentElement).toHaveTextContent(
       'Entrega em Porto Alegre, RS',
     )

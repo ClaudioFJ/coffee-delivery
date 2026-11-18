@@ -8,12 +8,6 @@
     <meta name="theme-color" content="#FAFAFA" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Coffee Delivery: escolha seu café e receba onde estiver." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
     <meta name="color-scheme" content="light dark" />
     <script>
       // Aplica a cor de fundo do tema ANTES do React carregar, evitando o
@@ -27,6 +21,15 @@
         document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
       } catch (e) {}
     </script>
+    <!-- Pré-carrega a maior imagem da primeira tela antes do JavaScript (melhora o LCP) -->
+    <link
+      rel="preload"
+      as="image"
+      href="/images/hero-cup-952.webp"
+      imagesrcset="/images/hero-cup-600.webp 600w, /images/hero-cup-952.webp 952w"
+      imagesizes="(min-width: 1024px) 476px, (min-width: 480px) 352px, 100vw"
+      fetchpriority="high"
+    />
     <title>Coffee Delivery</title>
   </head>
   <body>

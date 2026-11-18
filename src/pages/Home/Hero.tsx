@@ -1,8 +1,5 @@
 import { CoffeeIcon, PackageIcon, ShoppingCartIcon, TimerIcon } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
-import heroDark from '../../assets/illustrations/hero-mascot-dark.webp'
-import heroLight from '../../assets/illustrations/hero-mascot-light.webp'
-import { useTheme } from '../../hooks/useTheme'
 import {
   Benefit,
   Benefits,
@@ -30,8 +27,6 @@ const BENEFITS: BenefitItem[] = [
 ]
 
 export function Hero() {
-  const { mode } = useTheme()
-
   return (
     <HeroSection aria-labelledby="hero-title">
       <Content>
@@ -54,11 +49,15 @@ export function Hero() {
 
       <Illustration>
         {/* Ilustração decorativa: o texto ao lado já transmite a mensagem */}
+        {/* Fica em public/ com nome fixo para o index.html poder pré-carregá-la (LCP) [RNF-03].
+            srcSet: o celular baixa a versão de 600px; telas grandes/retina, a de 952px. */}
         <img
-          src={mode === 'dark' ? heroDark : heroLight}
+          src="/images/hero-cup-952.webp"
+          srcSet="/images/hero-cup-600.webp 600w, /images/hero-cup-952.webp 952w"
+          sizes="(min-width: 1024px) 476px, (min-width: 480px) 352px, 100vw"
           alt=""
-          width={558}
-          height={558}
+          width={952}
+          height={718}
           fetchPriority="high"
         />
       </Illustration>

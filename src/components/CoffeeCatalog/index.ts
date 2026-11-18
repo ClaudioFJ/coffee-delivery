@@ -1,0 +1,1 @@
+export { CoffeeCatalog } from './CoffeeCatalog'
